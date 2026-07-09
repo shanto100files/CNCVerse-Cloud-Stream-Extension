@@ -28,17 +28,25 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build all extensions
-      run: ./gradlew assembleDebug
+      run: ./gradlew assembleDebug --info 2>&1 | tail -50
 
-    - name: Find and collect .cs3 files
+    - name: Debug - Show build output structure
+      run: |
+        echo "=== Directory structure after build ==="
+        find . -name "*.cs3" -type f 2>/dev/null || echo "No .cs3 files found anywhere"
+        echo ""
+        echo "=== Build outputs ==="
+        find . -path "*/build/outputs/*" -type f 2>/dev/null | head -50 || echo "No build outputs"
+        echo ""
+        echo "=== All build directories ==="
+        find . -name "build" -type d 2>/dev/null | head -20
+
+    - name: Collect .cs3 files
       run: |
         mkdir -p cs3_files
-        echo "Searching for .cs3 files in build directories..."
-        find . -path "*/build/outputs/*.cs3" -exec cp {} cs3_files/ \;
-        echo "Also checking build.gradle.kts directories..."
-        find . -name "*.cs3" -not -path "./cs3_files/*" -exec cp {} cs3_files/ \;
-        echo "Found .cs3 files:"
-        ls -la cs3_files/ || echo "No .cs3 files found!"
+        find . -name "*.cs3" -type f -exec cp {} cs3_files/ \;
+        echo "Collected .cs3 files:"
+        ls -la cs3_files/ || echo "No .cs3 files collected"
 
     - name: Checkout builds branch
       uses: actions/checkout@v4
