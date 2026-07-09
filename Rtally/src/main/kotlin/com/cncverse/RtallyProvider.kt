@@ -66,9 +66,6 @@ class RtallyProvider : MainAPI() {
         page: Int,
         request: MainPageRequest
     ): HomePageResponse {
-        // Show star popup on first visit (shared across all CNCVerse plugins)
-        context?.let { StarPopupHelper.showStarPopupIfNeeded(it) }
-        
         val doc = app.get(
             "$mainUrl${request.data}?page=$page",
             cacheTime = 60,

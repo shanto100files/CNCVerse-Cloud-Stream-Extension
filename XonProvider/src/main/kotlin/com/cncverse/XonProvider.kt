@@ -280,9 +280,6 @@ class XonProvider : MainAPI() {
     )
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
-        // Show star popup on first visit (shared across all CNCVerse plugins)
-        context?.let { StarPopupHelper.showStarPopupIfNeeded(it) }
-        
         refreshCache()
         val homePageList = mutableListOf<HomePageList>()
 

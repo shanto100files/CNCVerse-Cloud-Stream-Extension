@@ -43,8 +43,6 @@ class HDrezkaProvider : MainAPI() {
         page: Int,
         request: MainPageRequest
     ): HomePageResponse {
-        HDrezkaProvider.context?.let { StarPopupHelper.showStarPopupIfNeeded(it) }
-        
         val url = request.data.split("?")
         val home = app.get("${url.first()}page/$page/?${url.last()}").document.select(
             "div.b-content__inline_items div.b-content__inline_item"

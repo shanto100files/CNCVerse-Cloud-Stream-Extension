@@ -31,11 +31,6 @@ class TamilUltraProvider : MainAPI() { // all providers must be an instance of M
         page: Int,
         request: MainPageRequest
     ): HomePageResponse {
-        context?.let { ctx ->
-            withContext(Dispatchers.Main) {
-                StarPopupHelper.showStarPopupIfNeeded(ctx)
-            }
-        }
          val genreClasses = listOf(
             "genre_tamil-news" to "Tamil News",
             "genre_tamil-movies" to "Tamil Movies",
