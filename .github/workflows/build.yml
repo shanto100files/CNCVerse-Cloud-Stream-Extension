@@ -28,18 +28,24 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build all extensions
-      run: ./gradlew assembleDebug --info 2>&1 | tail -50
+      run: ./gradlew assembleDebug
+      continue-on-error: true
 
-    - name: Debug - Show build output structure
+    - name: Debug - Show build results
       run: |
-        echo "=== Directory structure after build ==="
-        find . -name "*.cs3" -type f 2>/dev/null || echo "No .cs3 files found anywhere"
+        echo "=== Build exit code: $? ==="
         echo ""
-        echo "=== Build outputs ==="
-        find . -path "*/build/outputs/*" -type f 2>/dev/null | head -50 || echo "No build outputs"
+        echo "=== All .cs3 files on disk ==="
+        find / -name "*.cs3" -type f 2>/dev/null || echo "None found"
         echo ""
-        echo "=== All build directories ==="
-        find . -name "build" -type d 2>/dev/null | head -20
+        echo "=== Build output directories ==="
+        find . -name "build" -type d 2>/dev/null
+        echo ""
+        echo "=== build/outputs contents ==="
+        find . -path "*/build/outputs/*" -type f 2>/dev/null | head -100 || echo "None"
+        echo ""
+        echo "=== gradle tasks output ==="
+        ./gradlew tasks --all 2>/dev/null | grep -i "cs3\|plugin\|extension\|cloudstream" || echo "No matching tasks"
 
     - name: Collect .cs3 files
       run: |
@@ -64,7 +70,7 @@ jobs:
           echo "Updated .cs3 files:"
           ls -la builds_branch/*.cs3
         else
-          echo "WARNING: No .cs3 files found, keeping existing files"
+          echo "WARNING: No .cs3 files found from build, keeping existing files"
         fi
 
     - name: Update plugins.json URLs
