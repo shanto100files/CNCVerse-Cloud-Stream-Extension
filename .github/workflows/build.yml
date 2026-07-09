@@ -30,13 +30,15 @@ jobs:
     - name: Build all extensions
       run: ./gradlew assembleDebug
 
-    - name: Find all .cs3 files
-      id: find_cs3
+    - name: Find and collect .cs3 files
       run: |
         mkdir -p cs3_files
-        find . -name "*.cs3" -exec cp {} cs3_files/ \;
+        echo "Searching for .cs3 files in build directories..."
+        find . -path "*/build/outputs/*.cs3" -exec cp {} cs3_files/ \;
+        echo "Also checking build.gradle.kts directories..."
+        find . -name "*.cs3" -not -path "./cs3_files/*" -exec cp {} cs3_files/ \;
         echo "Found .cs3 files:"
-        ls -la cs3_files/
+        ls -la cs3_files/ || echo "No .cs3 files found!"
 
     - name: Checkout builds branch
       uses: actions/checkout@v4
@@ -46,10 +48,16 @@ jobs:
 
     - name: Copy .cs3 files to builds branch
       run: |
-        rm -f builds_branch/*.cs3
-        cp cs3_files/*.cs3 builds_branch/
-        echo "Updated .cs3 files:"
-        ls -la builds_branch/*.cs3
+        cd builds_branch
+        rm -f *.cs3
+        cd ..
+        if ls cs3_files/*.cs3 1>/dev/null 2>&1; then
+          cp cs3_files/*.cs3 builds_branch/
+          echo "Updated .cs3 files:"
+          ls -la builds_branch/*.cs3
+        else
+          echo "WARNING: No .cs3 files found, keeping existing files"
+        fi
 
     - name: Update plugins.json URLs
       run: |
