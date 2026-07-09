@@ -45,10 +45,8 @@ jobs:
         if [ -z "$(ls cs3_files/*.cs3 2>/dev/null)" ]; then
           echo "No .cs3 files found, using full.jar as fallback"
           find . -path "*/full_jar/debug/createFullJarDebug/full.jar" -type f | while read jar; do
-            dir=$(dirname "$jar")
-            module=$(echo "$dir" | sed 's|.*/||' | head -1)
-            parent=$(dirname "$dir" | xargs dirname | xargs dirname | xargs dirname | xargs dirname | xargs basename)
-            cp "$jar" "cs3_files/${parent}.cs3"
+            module=$(echo "$jar" | sed 's|^\./||' | cut -d'/' -f1)
+            cp "$jar" "cs3_files/${module}.cs3"
           done
         fi
         echo "Collected files:"
