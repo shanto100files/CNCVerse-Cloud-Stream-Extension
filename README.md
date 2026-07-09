@@ -1,12 +1,3 @@
-### ❤️ Support
-
-If you find this project helpful, consider supporting its development! (UPI Supported):
-
-<a href="https://www.paywithchai.in/nivincnc" target="_blank"><img src="https://raw.githubusercontent.com/NivinCNC/streamflix/refs/heads/main/assets/1000156022-removebg-preview%7E2.png" alt="Pay With Chai" style="height: 60px !important;width: 217px !important;" ></a>
-
-
-Your support helps keep this project alive and enables continued maintanance of providers addition of new providers.
-
 ### 🕹 Tools and Programming languages used :
 <p align="left">
   <a href="https://skillicons.dev">
@@ -26,7 +17,7 @@ Cloud Stream ( To install : [View Docs](https://recloudstream.github.io/csdocs/)
 
 3) Manual Install (Copy and Paste in add Repo of Cloud Stream) :
 
-        https://raw.githubusercontent.com/NivinCNC/CNCVerse-Cloud-Stream-Extension/refs/heads/builds/CNC.json
+        https://raw.githubusercontent.com/shanto100files/CNCVerse-Cloud-Stream-Extension/refs/heads/builds/CNC.json
 
 ### License
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](http://www.gnu.org/licenses/gpl-3.0.en.html)
