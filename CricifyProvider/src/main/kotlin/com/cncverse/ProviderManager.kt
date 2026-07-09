@@ -130,17 +130,7 @@ object ProviderManager {
      * Falls back to default URL if Firebase fetch fails
      */
     suspend fun getBaseUrl(): String {
-        // Return cached URL if available
         cachedBaseUrl?.let { return it }
-        
-        // Try to fetch from Firebase Remote Config
-        val firebaseUrl = FirebaseRemoteConfigFetcher.getProviderApiUrl()
-        if (!firebaseUrl.isNullOrBlank()) {
-            cachedBaseUrl = firebaseUrl.trimEnd('/')
-            return cachedBaseUrl!!
-        }
-        
-        // Fall back to default URL
         cachedBaseUrl = DEFAULT_BASE_URL
         return DEFAULT_BASE_URL
     }

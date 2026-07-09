@@ -53,18 +53,7 @@ class LiveEventsProvider : MainAPI() {
      * Falls back to default URL if Firebase fetch fails
      */
     private suspend fun getWebUrl(): String {
-        // Return cached URL if available
         cachedWebUrl?.let { return it }
-        
-        // Try to fetch from Firebase Remote Config
-        val firebaseUrl = FirebaseRemoteConfigFetcher.getBaseApiUrl()
-        if (!firebaseUrl.isNullOrBlank()) {
-            cachedWebUrl = firebaseUrl
-            mainUrl = cachedWebUrl!!
-            return cachedWebUrl!!
-        }
-        
-        // Fall back to default URL
         cachedWebUrl = DEFAULT_WEB_URL
         mainUrl = DEFAULT_WEB_URL
         return DEFAULT_WEB_URL
