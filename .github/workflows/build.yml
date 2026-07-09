@@ -21,31 +21,22 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
+
+    - name: Create local.properties
+      run: |
+        echo "sdk.dir=$ANDROID_HOME" > local.properties
+        cat local.properties
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
     - name: Build all extensions
       run: ./gradlew assembleDebug
-      continue-on-error: true
-
-    - name: Debug - Show build results
-      run: |
-        echo "=== Build exit code: $? ==="
-        echo ""
-        echo "=== All .cs3 files on disk ==="
-        find / -name "*.cs3" -type f 2>/dev/null || echo "None found"
-        echo ""
-        echo "=== Build output directories ==="
-        find . -name "build" -type d 2>/dev/null
-        echo ""
-        echo "=== build/outputs contents ==="
-        find . -path "*/build/outputs/*" -type f 2>/dev/null | head -100 || echo "None"
-        echo ""
-        echo "=== gradle tasks output ==="
-        ./gradlew tasks --all 2>/dev/null | grep -i "cs3\|plugin\|extension\|cloudstream" || echo "No matching tasks"
 
     - name: Collect .cs3 files
       run: |
@@ -70,7 +61,7 @@ jobs:
           echo "Updated .cs3 files:"
           ls -la builds_branch/*.cs3
         else
-          echo "WARNING: No .cs3 files found from build, keeping existing files"
+          echo "No .cs3 files found, keeping existing"
         fi
 
     - name: Update plugins.json URLs
